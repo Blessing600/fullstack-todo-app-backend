@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "module": "commonjs",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "allowSyntheticDefaultImports": true,
+    "moduleResolution": "node",
+    "forceConsistentCasingInFileNames": true,
+    "outDir": "./dist",
+    "types": ["node", "express", "cors"]
+  },
+  "include": ["src/**/*", "tsconfig.json", "Server.ts"],
+  "exclude": ["node_modules"]
+}
