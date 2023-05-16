@@ -1,18 +1,11 @@
-import { Schema, model, Model, Document } from 'mongoose';
+import { Schema, model } from 'mongoose';
+import { ITodo } from '../types/todo.ts';
 
-interface ITodoModel extends Model<ITodo> {}
-
-interface ITodo extends Document {
-  text: string;
-}
-
-const todoSchema = new Schema<ITodo>({
+const todoSchema: Schema = new Schema({
   text: {
     type: String,
     required: true,
   },
 });
 
-const TodoModel: ITodoModel = model<ITodo, ITodoModel>('Todo', todoSchema);
-
-export default TodoModel;
+export default model<ITodo>('ToDo', todoSchema);

@@ -4,13 +4,13 @@ import {
   saveToDo,
   updateToDo,
   deleteToDo,
-} from '../controllers/ToDoControllers';
+} from '../controllers/ToDoControllers.ts';
 
 const router = Router();
 
 router.get('/', getToDo);
 router.post('/save', saveToDo);
-router.put('/update/:id', updateToDo);
-router.delete('/delete/:id', deleteToDo);
+router.post('/update', updateToDo);
+router.delete('/delete', deleteToDo);
 
 export default router;

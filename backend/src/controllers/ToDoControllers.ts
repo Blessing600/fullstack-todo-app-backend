@@ -1,45 +1,77 @@
-const ToDoModel = require('../models/ToDoModel');
-import { ITodo } from '../types/todo';
-import TodoModel from '../models/TodoModel';
+import { ITodo } from '../types/todo.ts';
+import TodoModel from '../models/TodoModel.ts';
 import { Request, Response } from 'express';
 
 export const getToDo = async (req: Request, res: Response): Promise<void> => {
   try {
-    const toDo: ITodo[] = await TodoModel.find();
-    res.status(200).json({ toDo });
+    const todos: ITodo[] = await TodoModel.find();
+    res.status(200).json({ todos });
   } catch (error) {
     throw error;
   }
 };
 
 export const saveToDo = async (req: Request, res: Response): Promise<void> => {
-  const { text } = req.body;
-
-  ToDoModel.create({ text }).then((data: ITodo) => {
-    console.log('Added Successfully.......');
-    console.log(data);
-    res.send(data);
-  });
-};
-
-export const updateToDo = async (req: Request, res: Response) => {
-  const { _id, text } = req.body;
-
   try {
-    await ToDoModel.findByIdAndUpdate(_id, { text });
-    res.send('Updated Successfully.....');
+    const body = req.body as Pick<ITodo, 'text'>;
+
+    const todo: ITodo = new TodoModel({
+      text: body.text,
+    });
+
+    const newTodo: ITodo = await todo.save();
+    const allTodos: ITodo[] = await TodoModel.find();
+
+    res.status(201).json({
+      message: 'Added Successfully.......',
+      todo: newTodo,
+      todos: allTodos,
+    });
   } catch (error) {
-    console.log(error);
+    throw error;
   }
 };
 
-export const deleteToDo = async (req: Request, res: Response) => {
-  const { _id } = req.body;
-
+export const updateToDo = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
   try {
-    await ToDoModel.findByIdAndDelete(_id);
-    res.send('Delete Successfully.....');
+    const {
+      body: { text, id },
+    } = req;
+
+    const updateToDo: ITodo | null = await TodoModel.findByIdAndUpdate(
+      id,
+      { text },
+      { new: true }
+    );
+    const allTodos: ITodo[] = await TodoModel.find();
+    res.status(200).json({
+      message: 'Updated Successfully.....',
+      todo: updateToDo,
+      todos: allTodos,
+    });
   } catch (error) {
-    console.log(error);
+    throw error;
+  }
+};
+
+export const deleteToDo = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  try {
+    const deleteToDo: ITodo | null = await TodoModel.findByIdAndRemove(
+      req.body.id
+    );
+    const allTodos: ITodo[] = await TodoModel.find();
+    res.status(200).json({
+      message: 'Delete Successfully.....',
+      todo: deleteToDo,
+      todos: allTodos,
+    });
+  } catch (error) {
+    throw error;
   }
 };

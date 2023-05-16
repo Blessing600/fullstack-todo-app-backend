@@ -1,16 +1,26 @@
 {
   "compilerOptions": {
     "target": "es6",
-    "module": "commonjs",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "allowImportingTsExtensions":true,
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
+    "noEmit": true,
     "allowSyntheticDefaultImports": true,
-    "moduleResolution": "node",
     "forceConsistentCasingInFileNames": true,
     "outDir": "./dist",
-    "types": ["node", "express", "cors"]
+    "types": ["node", "express", "cors"],
+    "lib": [
+      "ESNext" /* ESNext includes new Level-4 features that were
+               recently added to the ECMA-262 JS spec */
+     ],
   },
-  "include": ["src/**/*", "tsconfig.json", "Server.ts"],
+  "ts-node": {
+    // Tell ts-node CLI to install the --loader automatically
+    "esm": true
+  },
+  "include": ["src/**/*.ts", "tsconfig.json"],
   "exclude": ["node_modules"]
 }
